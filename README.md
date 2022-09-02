@@ -1,7 +1,7 @@
 # Pig-Game
 
 
-This is an adaptation of the Pig game program from @jonasschmedtmann Complete Javascript course on Udemy.
+This is an adaptation of the Pig game program from @jonasschmedtmann's Complete Javascript course on Udemy.
 
 This program showcases the effective use of Javascript DOM manipulation.
 
