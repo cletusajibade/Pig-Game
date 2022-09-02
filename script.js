@@ -42,20 +42,12 @@ function roleDice() {
 btnRollEl.addEventListener('click', () => {
   if (playing) {
     const dice = roleDice();
-    diceEl.classList.remove('hidden');
-    diceEl.setAttribute('src', `dice-${dice}.png`);
+    showDice(dice);
 
     if (dice !== 1) {
-      currentScore += dice;
-      document.getElementById(`current--${currentPlayer}`).textContent =
-        currentScore;
+      setCurrentScore(dice);
     } else {
-      currentScore = 0;
-      document.getElementById(`current--${currentPlayer}`).textContent =
-        currentScore;
-      document
-        .querySelector(`.player--${currentPlayer}`)
-        .classList.remove('player--active');
+      resetCurrentScore();
       switchPlayer();
     }
   }
@@ -67,25 +59,13 @@ btnHoldEl.addEventListener('click', () => {
     if (score[currentPlayer] >= 20) {
       //End game, current player wins
       playing = false;
-      // console.log(`Player ${currentPlayer} wins`);
-
-      currentScore = 0;
-      document.getElementById(`current--${currentPlayer}`).textContent =
-        currentScore;
-      document.getElementById(`score--${currentPlayer}`).textContent =
-        score[currentPlayer];
-      document
-        .querySelector(`.player--${currentPlayer}`)
-        .classList.add('player--winner');
+      resetCurrentScore();
+      setMainScore();
+      setWinnerBg();
     } else {
-      currentScore = 0;
-      document.getElementById(`score--${currentPlayer}`).textContent =
-        score[currentPlayer];
-      document.getElementById(`current--${currentPlayer}`).textContent =
-        currentScore;
-      document
-        .querySelector(`.player--${currentPlayer}`)
-        .classList.remove('player--active');
+      resetCurrentScore();
+      setMainScore();
+      togglePlayerBg();
 
       switchPlayer();
     }
@@ -94,9 +74,40 @@ btnHoldEl.addEventListener('click', () => {
 
 btnNewGameEl.addEventListener('click', init);
 
-function switchPlayer() {
-  currentPlayer = currentPlayer === 0 ? 1 : 0;
+function showDice(dice) {
+  diceEl.classList.remove('hidden');
+  diceEl.setAttribute('src', `dice-${dice}.png`);
+}
 
+function switchPlayer() {
+  togglePlayerBg();
+  currentPlayer = currentPlayer === 0 ? 1 : 0;
+  togglePlayerBg();
+}
+
+function setCurrentScore(dice) {
+  currentScore += dice;
+  document.getElementById(`current--${currentPlayer}`).textContent =
+    currentScore;
+}
+function resetCurrentScore() {
+  currentScore = 0;
+  document.getElementById(`current--${currentPlayer}`).textContent =
+    currentScore;
+}
+
+function setMainScore() {
+  document.getElementById(`score--${currentPlayer}`).textContent =
+    score[currentPlayer];
+}
+
+function setWinnerBg() {
+  document
+    .querySelector(`.player--${currentPlayer}`)
+    .classList.add('player--winner');
+}
+
+function togglePlayerBg() {
   document
     .querySelector(`.player--${currentPlayer}`)
     .classList.toggle('player--active');
