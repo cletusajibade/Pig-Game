@@ -10,7 +10,11 @@ let currentScore1El = document.getElementById('current--1');
 let score0El = document.getElementById('score--0');
 let score1El = document.getElementById('score--1');
 
-let playerEl = document.querySelector('.player');
+let player0El = document.querySelector('.player--0');
+let player1El = document.querySelector('.player--1');
+
+let player0TitleEl = document.getElementById('name--0');
+let player1TitleEl = document.getElementById('name--1');
 
 let score, currentScore, currentPlayer, playing;
 
@@ -26,7 +30,11 @@ function init() {
   score1El.textContent = 0;
 
   diceEl.classList.add('hidden');
-  playerEl.classList.remove('player--winner');
+  player0El.classList.remove('player--winner');
+  player1El.classList.remove('player--winner');
+
+  player0TitleEl.textContent = 'Player 1';
+  player1TitleEl.textContent = 'Player 2';
 }
 
 init();
@@ -61,26 +69,32 @@ btnHoldEl.addEventListener('click', () => {
       playing = false;
       resetCurrentScore();
       setMainScore();
-      setWinnerBg();
+      setWinner();
+      hideDice();
     } else {
       resetCurrentScore();
       setMainScore();
-      togglePlayerBg();
-
       switchPlayer();
     }
   }
 });
 
-btnNewGameEl.addEventListener('click', init);
+btnNewGameEl.addEventListener('click', () => {
+  init();
+  togglePlayerBg();
+  hideDice();
+});
 
 function showDice(dice) {
   diceEl.classList.remove('hidden');
   diceEl.setAttribute('src', `dice-${dice}.png`);
 }
 
+function hideDice() {
+  diceEl.classList.add('hidden');
+}
+
 function switchPlayer() {
-  togglePlayerBg();
   currentPlayer = currentPlayer === 0 ? 1 : 0;
   togglePlayerBg();
 }
@@ -101,14 +115,16 @@ function setMainScore() {
     score[currentPlayer];
 }
 
-function setWinnerBg() {
+function setWinner() {
+  document.getElementById(`name--${currentPlayer}`).textContent = `Player ${
+    currentPlayer + 1
+  } wins`;
   document
     .querySelector(`.player--${currentPlayer}`)
     .classList.add('player--winner');
 }
 
 function togglePlayerBg() {
-  document
-    .querySelector(`.player--${currentPlayer}`)
-    .classList.toggle('player--active');
+  player0El.classList.toggle('player--active');
+  player1El.classList.toggle('player--active');
 }
