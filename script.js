@@ -52,53 +52,58 @@ function roleDice() {
 }
 
 btnRollEl.addEventListener('click', () => {
-  const dice = roleDice();
-  diceEl.classList.remove('hidden');
-  diceEl.setAttribute('src', `dice-${dice}.png`);
+  if (playing) {
+    const dice = roleDice();
+    diceEl.classList.remove('hidden');
+    diceEl.setAttribute('src', `dice-${dice}.png`);
 
-  if (player0) {
-    if (dice !== 1) {
-      currentScore0 += dice;
-      currentScore0El.textContent = currentScore0;
+    if (player0) {
+      if (dice !== 1) {
+        currentScore0 += dice;
+        currentScore0El.textContent = currentScore0;
+      } else {
+        switchPlayer();
+        currentScore0 = 0;
+        currentScore0El.textContent = 0;
+      }
     } else {
-      switchPlayer();
-      currentScore0 = 0;
-      currentScore0El.textContent = 0;
-    }
-  } else {
-    if (dice !== 1) {
-      currentScore1 += dice;
-      currentScore1El.textContent = currentScore1;
-    } else {
-      switchPlayer();
-      currentScore1 = 0;
-      currentScore1El.textContent = 0;
+      if (dice !== 1) {
+        currentScore1 += dice;
+        currentScore1El.textContent = currentScore1;
+      } else {
+        switchPlayer();
+        currentScore1 = 0;
+        currentScore1El.textContent = 0;
+      }
     }
   }
 });
 
 btnHoldEl.addEventListener('click', () => {
-  if (player0) {
-    score0 += currentScore0;
-    if (score0 >= 100) {
-      //End gam, current player wins
-      console.log('Player1 wins');
+  if (playing) {
+    if (player0) {
+      score0 += currentScore0;
+      if (score0 >= 100) {
+        //End game, current player wins
+        playing = false;
+        console.log('Player1 wins');
+      } else {
+        switchPlayer();
+      }
+      score0El.textContent = score0;
+      currentScore0 = 0;
+      currentScore0El.textContent = 0;
     } else {
-      switchPlayer();
+      score1 += currentScore1;
+      if (score1 >= 100) {
+        console.log('Player2 wins');
+      } else {
+        switchPlayer();
+      }
+      score1El.textContent = score1;
+      currentScore1 = 0;
+      currentScore1El.textContent = 0;
     }
-    score0El.textContent = score0;
-    currentScore0 = 0;
-    currentScore0El.textContent = 0;
-  } else {
-    score1 += currentScore1;
-    if (score1 >= 100) {
-      console.log('Player2 wins');
-    } else {
-      switchPlayer();
-    }
-    score1El.textContent = score1;
-    currentScore1 = 0;
-    currentScore1El.textContent = 0;
   }
 });
 
